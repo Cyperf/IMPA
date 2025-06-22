@@ -23,19 +23,19 @@ public class AutoPainter : MonoBehaviour
     public void Draw()
     {
         AdjustCam();
-        
+
         tileMap.ClearAllTiles();
         int x = 0;
         int y = 0;
         currentPosition.Set(x, y);
-        for (int i = 0; i < int.Parse(sizeX.text); i++)
+        for (int i = 1; i <= int.Parse(sizeX.text); i++)
         {
             PaintTiles(currentPosition);
-            for (int o = 0; o < int.Parse(sizeY.text); o++)
+            for (int o = 1; o <= int.Parse(sizeY.text); o++)
             {
-                y++;
                 currentPosition.Set(x, y);
                 PaintTiles(currentPosition);
+                y++;
             }
             y = 0;
             x++;
@@ -45,9 +45,20 @@ public class AutoPainter : MonoBehaviour
 
     private void AdjustCam()
     {
-        cam.orthographicSize = (int.Parse(sizeX.text) + int.Parse(sizeY.text)) / 3;
-        cam.transform.position = new Vector3(int.Parse(sizeX.text) / 2, int.Parse(sizeY.text) / 2,-10);
-    }
+        if (int.Parse(sizeX.text) > 1 && int.Parse(sizeY.text) > 1)
+        {
+            if (int.Parse(sizeX.text) < 15 && int.Parse(sizeY.text) < 15)
+            {
+                cam.orthographicSize = (int.Parse(sizeX.text) + int.Parse(sizeY.text)) / 2;
+            }
+            if (int.Parse(sizeX.text) >= 15 && int.Parse(sizeY.text) >= 15)
+            {
+                cam.orthographicSize = (int.Parse(sizeX.text) + int.Parse(sizeY.text)) / 3;
+            }
+            cam.transform.position = new Vector3(int.Parse(sizeX.text) / 2, int.Parse(sizeY.text) / 2, -10);
+        }
+    } 
+    
 
     public void PaintTiles(Vector2Int position)
     {
